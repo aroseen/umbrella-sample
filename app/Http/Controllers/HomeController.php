@@ -5,12 +5,15 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Response;
 use Illuminate\View\View;
 
+/**
+ * Class HomeController.
+ *
+ * @package App\Http\Controllers
+ */
 class HomeController extends Controller
 {
     /**
-     * Create a new controller instance.
-     *
-     * @return void
+     * HomeController constructor.
      */
     public function __construct()
     {
@@ -18,8 +21,6 @@ class HomeController extends Controller
     }
 
     /**
-     * Show the application dashboard.
-     *
      * @return Response|View
      */
     public function index()
