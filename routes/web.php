@@ -19,3 +19,12 @@ use Illuminate\Support\Facades\Route;
  */
 Auth::routes();
 Route::get('/', 'HomeController@index')->name('home');
+
+/**
+ * Создание новой ссылки
+ */
+
+Route::post('/create', [
+    'uses' => 'HomeController@create',
+    'as'   => 'home.create',
+]);

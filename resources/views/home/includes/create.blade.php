@@ -21,10 +21,11 @@
                     @endif
                     <div class="row">
                         <div class="col-sm-12">
-                            <form method="post" action="#">
+                            <form id="create-url-form" method="post" action="{{route('home.create')}}">
+                                {{csrf_field()}}
                                 <div class="form-group required">
                                     <label class="control-label" for="origin-url">{{ __('home.originUrlLabel') }}</label>
-                                    <input type="text" class="form-control" id="origin-url" required>
+                                    <input type="url" class="form-control" name="origin_url" id="origin-url" required>
                                 </div>
                                 <div class="form-group row required">
                                     <div class="col-sm-12">
@@ -33,9 +34,9 @@
                                     <div class="col-sm-8">
                                         <div class="input-group">
                                             <div class="input-group-prepend">
-                                                <div class="input-group-text">{{ url('/') }}/</div>
+                                                <div class="input-group-text">{{ \App\Helpers\Helper::getShortUrlPrefix() }}/</div>
                                             </div>
-                                            <input type="text" class="form-control" id="short-url" required>
+                                            <input type="text" class="form-control" name="short_url" id="short-url" required>
                                         </div>
                                     </div>
                                     <div class="col-sm-3">

@@ -13710,11 +13710,21 @@ __webpack_require__(38);
 __WEBPACK_IMPORTED_MODULE_0__node_modules_pnotify_dist_es_PNotify_js__["a" /* default */].defaults.styling = 'bootstrap4';
 
 // PNotify.error({
-//   title: 'Error',
-//   text: 'I\'m an error message.',
+//   title: 'Error1',
+//   text: 'I\'m an error message.1',
 //   animation: 'fade',
 //   animateSpeed: 'normal'
 // });
+
+$(document).ready(function () {
+  // new PNotify({
+  //   title: 'Bootstrap Error',
+  //   text: 'Look at my beautiful styling! ^_^',
+  //   type: 'error',
+  //   styling: 'bootstrap4'
+  // });
+
+});
 
 /***/ }),
 /* 13 */

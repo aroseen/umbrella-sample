@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateUrlRequest;
 use Illuminate\Http\Response;
 use Illuminate\View\View;
 
@@ -26,5 +27,16 @@ class HomeController extends Controller
     public function index()
     {
         return view('home.index');
+    }
+
+    /**
+     * @param CreateUrlRequest $request
+     * @return Response|View
+     */
+    public function create(CreateUrlRequest $request)
+    {
+        dd($request, auth()->user());
+
+        return redirect()->back();
     }
 }

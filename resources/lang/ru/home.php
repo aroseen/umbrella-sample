@@ -9,9 +9,12 @@
 
 return [
     // Общие тексты
+    'errorTitle'                  => 'Ошибка',
     'closeText'                   => 'Закрыть',
     'shareText'                   => 'Расшарить',
     'selectUsersText'             => 'Выберите пользователя',
+    'notValidUrlErrorMessage'     => 'Поле :attribute должно содержать валидную ссылку',
+    'errorUrlErrorMessage'        => 'Ошибка при валидации урла :url. Статус - :status',
     // Блок создания ссылок
     'createLinksBlockHeader'      => 'Создание ссылок',
     'originUrlLabel'              => 'Введите URL',
