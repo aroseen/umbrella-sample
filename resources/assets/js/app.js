@@ -1,22 +1,19 @@
-
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes Vue and other libraries. It is a great starting point when
  * building robust, powerful web applications using Vue and Laravel.
  */
+import PNotify from '../../../node_modules/pnotify/dist/es/PNotify.js';
+import PNotifyButtons from '../../../node_modules/pnotify/dist/es/PNotifyButtons.js';
 
 require('./bootstrap');
+require('select2');
 
-window.Vue = require('vue');
+PNotify.defaults.styling = 'bootstrap4';
 
-/**
- * Next, we will create a fresh Vue application instance and attach it to
- * the page. Then, you may begin adding components to this application
- * or customize the JavaScript scaffolding to fit your unique needs.
- */
-
-Vue.component('example-component', require('./components/ExampleComponent.vue'));
-
-const app = new Vue({
-    el: '#app'
-});
+// PNotify.error({
+//   title: 'Error',
+//   text: 'I\'m an error message.',
+//   animation: 'fade',
+//   animateSpeed: 'normal'
+// });

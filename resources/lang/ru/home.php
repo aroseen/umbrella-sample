@@ -8,9 +8,28 @@
 
 
 return [
-    'header'              => 'Создание ссылок',
-    'originUrlLabel'      => 'Введите URL',
-    'shortUrlLabel'       => 'Введите короткий URL или нажмите кнопку `Сгенерировать`',
-    'generateButtonLabel' => 'Сгенерировать',
-    'submit'              => 'Создать',
+    // Общие тексты
+    'closeText'                   => 'Закрыть',
+    'shareText'                   => 'Расшарить',
+    'selectUsersText'             => 'Выберите пользователя',
+    // Блок создания ссылок
+    'createLinksBlockHeader'      => 'Создание ссылок',
+    'originUrlLabel'              => 'Введите URL',
+    'shortUrlLabel'               => 'Введите короткий URL или нажмите кнопку `Сгенерировать`',
+    'generateButtonLabel'         => 'Сгенерировать',
+    'submit'                      => 'Создать',
+    // Блок статуса
+    'statusBlockLabel'            => 'Статус',
+    // Блок доступных ссылок
+    'linksBlockLabel'             => 'Ссылки',
+    'selfLinksLabel'              => 'Ваши ссылки',
+    'availableLinksLabel'         => 'Расшаренные Вам ссылки',
+    'sharedLinksLabel'            => 'Расшаренные Вами ссылки',
+    'shareButtonText'             => 'Расшарить',
+    'stopShareButtonText'         => 'Отменить',
+    // Блок настроек
+    'settingsBlockLabel'          => 'Настройки',
+    'activateSharesCheckboxLabel' => 'Включить возможность расшаривания ссылок',
+    // Модальное окно расшаривания
+    'shareModalTitle'             => 'Расшарить ссылку пользователю',
 ];

@@ -18,5 +18,9 @@
         "laravel-mix": "^2.0",
         "lodash": "^4.17.4",
         "vue": "^2.5.7"
+    },
+    "dependencies": {
+        "pnotify": "^4.0.0-alpha.4",
+        "select2": "^4.0.6-rc.1"
     }
 }
