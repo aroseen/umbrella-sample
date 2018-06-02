@@ -18,7 +18,7 @@ return [
     // Блок создания ссылок
     'createLinksBlockHeader'      => 'Создание ссылок',
     'originUrlLabel'              => 'Введите URL',
-    'shortUrlLabel'               => 'Введите короткий URL или нажмите кнопку `Сгенерировать`',
+    'shortUrlLabel'               => 'Введите короткий URL (опционально)',
     'generateButtonLabel'         => 'Сгенерировать',
     'submit'                      => 'Создать',
     // Блок статуса

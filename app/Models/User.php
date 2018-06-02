@@ -14,8 +14,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  * @property int             $id
  * @property string          $name
  * @property string          $email
- * @property int             $permissions
- * @property bool            $is_admin
+ * @property bool            $can_share
+ * @property int             $short_urls_count
  * @property Carbon          $created_at
  * @property Carbon          $updated_at
  *
@@ -34,8 +34,9 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'permissions',
-        'is_admin',
+        'can_share',
+        'api_token',
+        'short_urls_count',
     ];
 
     /**
@@ -50,7 +51,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $casts = [
-        'is_admin' => 'bool',
+        'can_share' => 'bool',
     ];
 
     /**

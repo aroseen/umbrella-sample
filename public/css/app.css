@@ -10422,3 +10422,7 @@ a.text-dark:focus {
   color: red;
 }
 
+.no-left-paddings {
+  padding-left: 20px;
+}
+

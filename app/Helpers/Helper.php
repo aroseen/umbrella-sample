@@ -22,4 +22,13 @@ class Helper
     {
         return route('home');
     }
+
+    /**
+     * @param string $string
+     * @return string
+     */
+    public static function clearString(string $string): string
+    {
+        return trim(mb_convert_encoding($string, 'UTF-8'));
+    }
 }

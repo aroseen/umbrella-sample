@@ -13709,21 +13709,71 @@ __webpack_require__(38);
 
 __WEBPACK_IMPORTED_MODULE_0__node_modules_pnotify_dist_es_PNotify_js__["a" /* default */].defaults.styling = 'bootstrap4';
 
-// PNotify.error({
-//   title: 'Error1',
-//   text: 'I\'m an error message.1',
-//   animation: 'fade',
-//   animateSpeed: 'normal'
-// });
+var ERROR_TYPE = 'error';
+var NOTICE_TYPE = 'notice';
+var SUCCESS_TYPE = 'success';
+
+function showNotification(type, title, text) {
+
+  if (Array.isArray(text)) {
+    var html = '<ul class="no-left-paddings">';
+    var _iteratorNormalCompletion = true;
+    var _didIteratorError = false;
+    var _iteratorError = undefined;
+
+    try {
+      for (var _iterator = text[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+        var elem = _step.value;
+
+        html += '<li>' + elem + '</li>';
+      }
+    } catch (err) {
+      _didIteratorError = true;
+      _iteratorError = err;
+    } finally {
+      try {
+        if (!_iteratorNormalCompletion && _iterator.return) {
+          _iterator.return();
+        }
+      } finally {
+        if (_didIteratorError) {
+          throw _iteratorError;
+        }
+      }
+    }
+
+    text = html + '</ul>';
+  }
+
+  __WEBPACK_IMPORTED_MODULE_0__node_modules_pnotify_dist_es_PNotify_js__["a" /* default */].alert({
+    width: 600,
+    title: title,
+    text: text,
+    animation: 'fade',
+    animateSpeed: 'normal',
+    type: type,
+    textTrusted: true
+  });
+}
 
 $(document).ready(function () {
-  // new PNotify({
-  //   title: 'Bootstrap Error',
-  //   text: 'Look at my beautiful styling! ^_^',
-  //   type: 'error',
-  //   styling: 'bootstrap4'
-  // });
-
+  $(document).find('#generate-short-url-button').click(function () {
+    $.get('/generate_short_url', {
+      origin_url: $(document).find('#origin-url').val()
+    }).done(function (response) {
+      $(document).find('#short-url').val(response.text);
+    }).fail(function (response) {
+      if (response.message !== undefined) {
+        showNotification(ERROR_TYPE, 'Невозможно сгенерировать короткий URL', response.message);
+      } else {
+        var errors = [];
+        for (var error in response.responseJSON.errors) {
+          errors.push(response.responseJSON.errors[error]);
+        }
+        showNotification(ERROR_TYPE, 'Невозможно сгенерировать короткий URL', errors);
+      }
+    });
+  });
 });
 
 /***/ }),

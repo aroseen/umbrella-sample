@@ -28,3 +28,11 @@ Route::post('/create', [
     'uses' => 'HomeController@create',
     'as'   => 'home.create',
 ]);
+
+/**
+ * Генерация короткой ссылки
+ */
+Route::get('/generate_short_url', [
+    'uses' => 'HomeController@generateShortUrl',
+    'as'   => 'home.generate_short_url',
+]);

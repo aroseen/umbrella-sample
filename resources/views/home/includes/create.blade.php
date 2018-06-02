@@ -27,7 +27,7 @@
                                     <label class="control-label" for="origin-url">{{ __('home.originUrlLabel') }}</label>
                                     <input type="url" class="form-control" name="origin_url" id="origin-url" required>
                                 </div>
-                                <div class="form-group row required">
+                                <div class="form-group row">
                                     <div class="col-sm-12">
                                         <label class="control-label" for="short-url">{{ __('home.shortUrlLabel') }}</label>
                                     </div>
@@ -36,11 +36,11 @@
                                             <div class="input-group-prepend">
                                                 <div class="input-group-text">{{ \App\Helpers\Helper::getShortUrlPrefix() }}/</div>
                                             </div>
-                                            <input type="text" class="form-control" name="short_url" id="short-url" required>
+                                            <input type="text" class="form-control" name="short_url" id="short-url">
                                         </div>
                                     </div>
                                     <div class="col-sm-3">
-                                        <button type="button" class="btn btn-primary btn-block">{{ __('home.generateButtonLabel') }}</button>
+                                        <button type="button" class="btn btn-primary btn-block" id="generate-short-url-button">{{ __('home.generateButtonLabel') }}</button>
                                     </div>
                                 </div>
                                 <div class="form-group">

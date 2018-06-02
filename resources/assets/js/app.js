@@ -11,19 +11,45 @@ require('select2');
 
 PNotify.defaults.styling = 'bootstrap4';
 
-// PNotify.error({
-//   title: 'Error1',
-//   text: 'I\'m an error message.1',
-//   animation: 'fade',
-//   animateSpeed: 'normal'
-// });
+const ERROR_TYPE = 'error';
+const NOTICE_TYPE = 'notice';
+const SUCCESS_TYPE = 'success';
+
+function showNotification (type, title, text) {
+
+  if (Array.isArray(text)) {
+    let html = '<ul class="no-left-paddings">';
+    for (let elem of text) {
+      html += '<li>' + elem + '</li>';
+    }
+    text = html + '</ul>';
+  }
+
+  PNotify.alert({
+    width: 600,
+    title: title,
+    text: text,
+    animation: 'fade',
+    animateSpeed: 'normal',
+    type: type,
+    textTrusted: true
+  });
+}
 
 $(document).ready(function () {
-  // new PNotify({
-  //   title: 'Bootstrap Error',
-  //   text: 'Look at my beautiful styling! ^_^',
-  //   type: 'error',
-  //   styling: 'bootstrap4'
-  // });
-
+  $(document).find('#generate-short-url-button').click(function () {
+    $.get('/generate_short_url', {
+      origin_url: $(document).find('#origin-url').val()
+    })
+      .done(function (response) {
+        $(document).find('#short-url').val(response.text);
+      })
+      .fail(function (response) {
+        let errors = [];
+        for (let error in response.responseJSON.errors) {
+          errors.push(response.responseJSON.errors[error]);
+        }
+        showNotification(ERROR_TYPE, 'Невозможно сгенерировать короткий URL', errors);
+      });
+  });
 });

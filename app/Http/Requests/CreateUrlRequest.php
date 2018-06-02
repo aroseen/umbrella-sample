@@ -40,7 +40,7 @@ class CreateUrlRequest extends FormRequest
     {
         return [
             'origin_url' => 'required|url',
-            'short_url'  => 'required|url',
+            'short_url'  => 'nullable|url',
         ];
     }
 
@@ -93,7 +93,7 @@ class CreateUrlRequest extends FormRequest
      */
     private function validationFailed(Validator $validator, string $key, string $message): void
     {
-        $validator->getMessageBag()->add($key, $message);
+        $validator->getMessageBag()->add($key, Helper::clearString($message));
         throw new ValidationException($validator);
     }
 }

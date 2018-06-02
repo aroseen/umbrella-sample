@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Components\Api;
+use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
 
 /**
@@ -28,6 +30,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->bind(Api::class,function(Application $app) {
+            return new Api(config('api.api_url'));
+        });
     }
 }
