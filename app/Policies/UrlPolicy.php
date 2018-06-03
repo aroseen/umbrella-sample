@@ -7,11 +7,11 @@ use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 /**
- * Class SharePolicy.
+ * Class UrlPolicy.
  *
  * @package App\Policies
  */
-class SharePolicy
+class UrlPolicy
 {
     use HandlesAuthorization;
 
@@ -33,5 +33,19 @@ class SharePolicy
     public function unshare(User $user, Url $url): bool
     {
         return $user->id === $url->owner_id;
+    }
+
+    /**
+     * @param User $user
+     * @param Url  $url
+     * @return bool
+     */
+    public function redirect(User $user, Url $url): bool
+    {
+        if ($url->owner_id === $user->id) {
+            return true;
+        }
+
+        return $url->shares()->where('user_id', $user->id)->count() !== 0;
     }
 }

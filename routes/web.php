@@ -69,7 +69,16 @@ Route::get('/usersToShare/{url}', [
     'as'   => 'home.usersToShare',
 ]);
 
+/**
+ * Перезагрузить таблицы/таблицу
+ */
 Route::get('/reloadTables', [
     'uses' => 'HomeController@reloadTables',
     'as'   => 'home.reloadTables',
 ]);
+
+/**
+ * Редиректы коротких ссылок
+ */
+Route::get('/{shortUrl}', function () {
+})->name('home.redirector')->middleware('redirectShortUrl');

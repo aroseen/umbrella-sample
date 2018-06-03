@@ -4,9 +4,11 @@ namespace App\Providers;
 
 use App\Components\Api;
 use App\Components\Table;
-use App\Http\Composers\HomeViewComposer;
 use App\Http\Composers\TablesViewComposer;
+use App\Models\Url;
+use App\Models\User;
 use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
@@ -25,6 +27,16 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         View::composer('elements.table', TablesViewComposer::class);
+
+        Route::bind('shortUrl', function (string $value) {
+            /** @var User $user */
+            $user = auth()->user();
+            $url  = Url::query()->where('short_url', route('home.redirector', [
+                'shortUrl' => $value,
+            ]))->first();
+
+            return $user->can('redirect', $url) ? $url : abort(404);
+        });
     }
 
     /**

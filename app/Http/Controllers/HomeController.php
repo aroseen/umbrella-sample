@@ -12,6 +12,7 @@ use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Exception\ServerException;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\View\View;
@@ -42,6 +43,15 @@ class HomeController extends Controller
             'getSharedTableContent'   => $table->getSharedTableData(),
             'sharedLinksTableContent' => $table->sharedLinksTableData(),
         ]);
+    }
+
+    /**
+     * @param Request $request
+     * @return RedirectResponse
+     */
+    public function redirectShortUrl(Request $request): RedirectResponse
+    {
+        dd($request);
     }
 
     /**
