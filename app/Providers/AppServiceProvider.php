@@ -60,7 +60,7 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->bind(Api::class, function (Application $app) {
-            return new Api(config('api.api_url'));
+            return new Api(config('application.api_url'));
         });
 
         $this->app->bind(Table::class, function (Application $app) {

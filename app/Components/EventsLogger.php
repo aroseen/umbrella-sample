@@ -125,4 +125,16 @@ class EventsLogger
             'name' => $authUser->name,
         ]));
     }
+
+    /**
+     * @param Url $url
+     */
+    public function oldUrlRemoved(Url $url): void
+    {
+        $this->logger->info(__('logger_events.url.oldUrlRemoved', [
+            'id'         => $url->id,
+            'short_url'  => $url->short_url,
+            'created_at' => $url->created_at,
+        ]));
+    }
 }

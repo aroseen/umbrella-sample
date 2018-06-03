@@ -15,4 +15,5 @@ return [
     'url.unshared'            => 'Пользователь [id = :id, name = :name] отменил расшаривание ссылки [id = :url_id, short_url = :short_url] для пользователя [id = :share_id, short_url = :share_name].',
     'user.sharingActivated'   => 'Пользователь [id = :id, name = :name] включил возможность расшаривания своих ссылок.',
     'user.sharingDeactivated' => 'Пользователь [id = :id, name = :name] отключил возможность расшаривания своих ссылок.',
+    'url.oldUrlRemoved'       => 'Ссылка [id = :id, short_url = :short_url, created_at = :created_at] была удалена, так как является устаревшей.',
 ];
