@@ -3,11 +3,13 @@
 namespace App\Providers;
 
 use App\Components\Api;
+use App\Components\EventsLogger;
 use App\Components\Table;
 use App\Http\Composers\TablesViewComposer;
 use App\Models\Url;
 use App\Models\User;
 use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
@@ -37,6 +39,17 @@ class AppServiceProvider extends ServiceProvider
 
             return $user->can('redirect', $url) ? $url : abort(404);
         });
+
+        Event::listen('log:event:*', function ($eventName, array $data) {
+            $eventName = str_replace('log:event:', null, $eventName);
+            /** @var EventsLogger $eventsLogger */
+            $eventsLogger = $this->app[EventsLogger::class];
+
+            if (method_exists($eventsLogger, $eventName)) {
+                $eventsLogger->{$eventName}(...array_values($data));
+            }
+        });
+
     }
 
     /**
@@ -53,5 +66,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(Table::class, function (Application $app) {
             return new Table(auth()->user());
         });
+
+        $this->app->singleton(EventsLogger::class);
     }
 }

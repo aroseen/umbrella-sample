@@ -12,7 +12,6 @@ use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Exception\ServerException;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\View\View;
@@ -46,15 +45,6 @@ class HomeController extends Controller
     }
 
     /**
-     * @param Request $request
-     * @return RedirectResponse
-     */
-    public function redirectShortUrl(Request $request): RedirectResponse
-    {
-        dd($request);
-    }
-
-    /**
      * @param CreateUrlRequest $request
      * @param Api              $api
      * @return Response|View
@@ -79,13 +69,19 @@ class HomeController extends Controller
             ]));
         }
 
-        $user->ownUrls()->save(new Url([
+        $url = new Url([
             'owner_id'   => $user->id,
             'origin_url' => $originUrl,
             'short_url'  => $shortUrl,
-        ]));
+        ]);
 
+        $user->ownUrls()->save($url);
         $user->newQuery()->increment('short_urls_count');
+
+        event('log:event:urlCreated', [
+            'user' => $user,
+            'url'  => $url,
+        ]);
 
         return redirect()->back()->with('success', __('home.createdSuccessfully', [
             'url' => $request->input('origin_url'),
@@ -144,6 +140,12 @@ class HomeController extends Controller
                     'url_id' => $url->id,
                 ]);
 
+                event('log:event:urlShared', [
+                    'user'      => $authUser,
+                    'shareuser' => $user,
+                    'url'       => $url,
+                ]);
+
                 return new JsonResponse([
                     'status'  => self::STATUS_SUCCESS,
                     'title'   => __('home.successTitle'),
@@ -181,6 +183,12 @@ class HomeController extends Controller
                     'user_id' => $user->id,
                 ])->delete();
 
+                event('log:event:urlUnshared', [
+                    'user'      => $authUser,
+                    'shareuser' => $user,
+                    'url'       => $url,
+                ]);
+
                 return new JsonResponse([
                     'status'  => self::STATUS_SUCCESS,
                     'title'   => __('home.successTitle'),
@@ -212,6 +220,11 @@ class HomeController extends Controller
             [$authUser, $canShare] = [auth()->user(), $request->input('canShare')];
             $authUser->update([
                 'can_share' => $canShare,
+            ]);
+
+            event('log:event:toggleSharing', [
+                'user'     => $authUser,
+                'canShare' => $canShare,
             ]);
 
             return new JsonResponse([

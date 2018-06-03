@@ -4,6 +4,9 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class LoginController extends Controller
 {
@@ -18,7 +21,9 @@ class LoginController extends Controller
     |
     */
 
-    use AuthenticatesUsers;
+    use AuthenticatesUsers {
+        logout as public logoutTrait;
+    }
 
     /**
      * Where to redirect users after login.
@@ -35,5 +40,29 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
+    }
+
+    /**
+     * @param Request $request
+     * @param         $user
+     */
+    protected function authenticated(Request $request, $user): void
+    {
+        event('log:event:userLogin', [
+            'user' => $user,
+        ]);
+    }
+
+    /**
+     * @param Request $request
+     * @return RedirectResponse|Response
+     */
+    public function logout(Request $request): RedirectResponse
+    {
+        event('log:event:userLogout', [
+            'user' => auth()->user(),
+        ]);
+
+        return $this->logoutTrait($request);
     }
 }
