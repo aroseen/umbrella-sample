@@ -73,6 +73,33 @@ class Url extends Model
      */
     public function sharedUsers(): BelongsToMany
     {
-        return $this->belongsToMany(Url::class, 'shares', 'url_id', 'user_id', 'id');
+        return $this->belongsToMany(User::class, 'shares', 'url_id', 'user_id', 'id');
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | FUNCTIONS
+    |--------------------------------------------------------------------------
+     */
+
+    /**
+     * @param string $shortUtl
+     * @return bool
+     */
+    public static function shortUrlExists(string $shortUtl): bool
+    {
+        return static::query()->where('short_url', $shortUtl)->count() !== 0;
+    }
+
+    /**
+     * @param string $originUrl
+     * @return int
+     */
+    public static function originUrlsCount(string $originUrl): int
+    {
+        return static::query()->where([
+            'origin_url' => $originUrl,
+            'owner_id'   => auth()->user()->getAuthIdentifier(),
+        ])->count();
     }
 }

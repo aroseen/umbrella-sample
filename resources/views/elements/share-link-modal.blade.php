@@ -17,11 +17,11 @@
             </div>
             <div class="modal-body">
                 <strong>{{__('home.selectUsersText')}}</strong>
-                <select class="form-control input-lg" id="share-users-list" required title="{{__('home.shareModalTitle')}}"></select>
+                <select class="form-control input-lg" id="share-users-list" title="{{__('home.shareModalTitle')}}"></select>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">{{__('home.closeText')}}</button>
-                <button type="button" class="btn btn-primary">{{__('home.shareText')}}</button>
+                <button type="button" class="btn btn-primary" id="share-link-to-user">{{__('home.shareText')}}</button>
             </div>
         </div>
     </div>

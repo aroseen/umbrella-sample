@@ -14,7 +14,7 @@
                 <div class="card-header">{{ __('home.settingsBlockLabel') }}</div>
                 <div class="card-body">
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="shareCheckbox">
+                        <input class="form-check-input" type="checkbox" @if(auth()->user()->can_share) checked @endif id="shareCheckbox">
                         <label class="form-check-label" for="shareCheckbox">{{ __('home.activateSharesCheckboxLabel') }}</label>
                     </div>
                 </div>

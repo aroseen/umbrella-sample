@@ -8,6 +8,7 @@
 
 namespace App\Components;
 
+use App\Helpers\Helper;
 use GuzzleHttp\Client;
 
 /**
@@ -40,7 +41,8 @@ class Api
     public function getShortUrl(string $originUrl): string
     {
         $requestUrl = $this->makeRequestUrl(static::GET_SHORT_METHOD, [
-            'url' => $originUrl,
+            'url'    => $originUrl,
+            'prefix' => Helper::getShortUrlPrefix().'/',
         ]);
 
         $response = (new Client([

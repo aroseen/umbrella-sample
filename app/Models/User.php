@@ -3,10 +3,13 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Collection as BaseCollection;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Facades\DB;
 
 /**
  * Class User.
@@ -87,5 +90,31 @@ class User extends Authenticatable
     public function sharedUrls(): BelongsToMany
     {
         return $this->belongsToMany(Url::class, 'shares', 'user_id', 'url_id', 'id');
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | FUNCTIONS
+    |--------------------------------------------------------------------------
+     */
+
+    /**
+     * @param array $columns
+     * @return BaseCollection
+     */
+    public function getSharedWithUrls(array $columns = ['*']): BaseCollection
+    {
+        return DB::table('shares')->join('urls', 'urls.id', '=', 'shares.url_id')->join('users', 'users.id', '=', 'shares.user_id')->where('urls.owner_id', $this->id)->get($columns);
+    }
+
+    /**
+     * @param Url $url
+     * @return Collection
+     */
+    public function getUsersToShare(Url $url): Collection
+    {
+        return $this->newQuery()->where('id', '!=', $this->id)->whereDoesntHave('shares', function (Builder $query) use ($url) {
+            return $query->where('shares.url_id', $url->id);
+        })->get(['users.id', 'users.name']);
     }
 }

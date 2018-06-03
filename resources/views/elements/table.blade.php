@@ -4,14 +4,15 @@
     * @var array  $headings
     * @var array  $rowsData
     * @var string $header
+    * @var string $tableName
     *
     **/
 @endphp
 
 @if($headings)
-    <div class="table-responsive">
-        <strong>{{ $header }}</strong>
-        <table class="table">
+    <div id="{{$tableName}}" class="table-responsive">
+        <p><strong>{{ $header }}</strong></p>
+        <table class="table table-hover">
             <thead>
             <tr>
                 @foreach($headings as $heading)
@@ -20,13 +21,19 @@
             </tr>
             </thead>
             <tbody>
-            @foreach($rowsData as $row)
+            @if($rowsData)
+                @foreach($rowsData as $row)
+                    <tr>
+                        @foreach($row as $cell)
+                            <td>{!! $cell !!}</td>
+                        @endforeach
+                    </tr>
+                @endforeach
+            @else
                 <tr>
-                    @foreach($row as $cell)
-                        <td>{!! $cell !!}</td>
-                    @endforeach
+                    <td>{{__('home.recordsNotFound')}}</td>
                 </tr>
-            @endforeach
+            @endif
             </tbody>
         </table>
     </div>

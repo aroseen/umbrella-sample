@@ -7,14 +7,23 @@ import PNotify from '../../../node_modules/pnotify/dist/es/PNotify.js';
 import PNotifyButtons from '../../../node_modules/pnotify/dist/es/PNotifyButtons.js';
 
 require('./bootstrap');
-require('select2');
+let axios = require('axios');
 
 PNotify.defaults.styling = 'bootstrap4';
 
+const OWN_LINKS_TABLE = 'own_links_table';
+const SHARED_LINKS_TABLE = 'shared_links_table';
+const GET_SHARED_TABLE = 'get_shared_table';
+
 const ERROR_TYPE = 'error';
-const NOTICE_TYPE = 'notice';
 const SUCCESS_TYPE = 'success';
 
+/**
+ * Показать уведомление
+ * @param type
+ * @param title
+ * @param text
+ */
 function showNotification (type, title, text) {
 
   if (Array.isArray(text)) {
@@ -36,20 +45,109 @@ function showNotification (type, title, text) {
   });
 }
 
-$(document).ready(function () {
-  $(document).find('#generate-short-url-button').click(function () {
-    $.get('/generate_short_url', {
-      origin_url: $(document).find('#origin-url').val()
+/**
+ * Перезагрузка таблиц
+ * @param tables
+ */
+function reloadTables (tables) {
+  axios.get('/reloadTables', {
+    params: {
+      tables: tables
+    }
+  })
+    .then(function (response) {
+      for (let table in response.data.tables) {
+        $(document).find('#' + table).html(response.data.tables[table]);
+      }
     })
-      .done(function (response) {
-        $(document).find('#short-url').val(response.text);
+    .catch(function (error) {
+      showNotification(ERROR_TYPE, error.response.data.title, error.response.data.message);
+    });
+}
+
+$(document).ready(function () {
+
+  $(document).find('#generate-short-url-button').click(function () {
+    axios.get('/generateShortUrl', {
+      params: {
+        origin_url: $(document).find('#origin-url').val()
+      }
+    })
+      .then(function (response) {
+        $(document).find('#short-url').val(response.data.short);
       })
-      .fail(function (response) {
+      .catch(function (errorResponse) {
         let errors = [];
-        for (let error in response.responseJSON.errors) {
-          errors.push(response.responseJSON.errors[error]);
+        for (let error in errorResponse.response.data.errors) {
+          errors.push(errorResponse.response.data.errors[error]);
         }
-        showNotification(ERROR_TYPE, 'Невозможно сгенерировать короткий URL', errors);
+        showNotification(ERROR_TYPE, errorResponse.response.data.title || 'Невозможно сгенерировать короткий URL', errors);
       });
   });
+
+  let urlId = null;
+
+  $(document).find('.open-share-dialog-button').click(function (event) {
+    urlId = $(event.target).data('urlId');
+  });
+
+  $(document).find('#share-link-to-user').click(function (event) {
+    let userId = $(document).find('#share-users-list').val();
+    if (urlId !== null && userId !== null) {
+      axios.post('/share/' + urlId + '/' + userId)
+        .then(function (response) {
+          $(event.target).closest('.modal').modal('hide');
+          reloadTables([SHARED_LINKS_TABLE]);
+          showNotification(SUCCESS_TYPE, response.data.title, response.data.message);
+        })
+        .catch(function (error) {
+          showNotification(ERROR_TYPE, error.response.data.title, error.response.data.message);
+        });
+    }
+  });
+
+  $(document).find('body').on('click', '.unshare-button', function () {
+    let urlId = $(event.target).data('urlId'), userId = $(event.target).data('userId');
+    if (urlId !== undefined && userId !== undefined) {
+      axios.post('/unshare/' + urlId + '/' + userId)
+        .then(function (response) {
+          reloadTables([SHARED_LINKS_TABLE]);
+          showNotification(SUCCESS_TYPE, response.data.title, response.data.message);
+        })
+        .catch(function (error) {
+          showNotification(ERROR_TYPE, error.response.data.title, error.response.data.message);
+        });
+    }
+  });
+
+  $(document).find('.modal').on('show.bs.modal', function () {
+    if (urlId !== null) {
+      axios.get('/usersToShare/' + urlId)
+        .then(function (response) {
+          let options = [];
+          for (let user of response.data.users) {
+            options.push('<option value="' + user.id + '">' + user.name + '</option>');
+          }
+          $(document).find('#share-users-list').html(options);
+
+        })
+        .catch(function (error) {
+          showNotification(ERROR_TYPE, error.response.data.title, error.response.data.message);
+        });
+    }
+  });
+
+  $(document).find('#shareCheckbox').change(function (event) {
+    axios.put('/toggleCanShare', {
+      canShare: $(event.target).prop('checked')
+    })
+      .then(function (response) {
+        reloadTables([OWN_LINKS_TABLE]);
+        showNotification(SUCCESS_TYPE, response.data.title, response.data.message);
+      })
+      .catch(function (error) {
+        showNotification(ERROR_TYPE, error.response.data.title, error.response.data.message);
+      });
+  });
+
 });

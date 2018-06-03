@@ -32,6 +32,8 @@ class Share extends Model
         'user_id',
     ];
 
+    public $timestamps = false;
+
     /*
     |--------------------------------------------------------------------------
     | RELATIONS
