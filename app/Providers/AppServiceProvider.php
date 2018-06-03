@@ -9,6 +9,7 @@ use App\Http\Composers\TablesViewComposer;
 use App\Models\Url;
 use App\Models\User;
 use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\View;
@@ -49,6 +50,14 @@ class AppServiceProvider extends ServiceProvider
                 $eventsLogger->{$eventName}(...array_values($data));
             }
         });
+
+        if ($this->app->environment() === 'production') {
+            $url = parse_url(getenv('CLEARDB_DATABASE_URL'));
+            Config::set('database.connections.mysql.host', $url['host']);
+            Config::set('database.connections.mysql.username', $url['user']);
+            Config::set('database.connections.mysql.password', $url['pass']);
+            Config::set('database.connections.mysql.database', substr($url['path'], 1));
+        }
 
     }
 
