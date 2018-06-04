@@ -87,7 +87,7 @@ $(document).ready(function () {
 
   let urlId = null;
 
-  $(document).find('.open-share-dialog-button').click(function (event) {
+  $(document).find('body').on('click', '.open-share-dialog-button', function (event) {
     urlId = $(event.target).data('urlId');
   });
 
