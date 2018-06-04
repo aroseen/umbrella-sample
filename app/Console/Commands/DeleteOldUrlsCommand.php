@@ -46,6 +46,7 @@ class DeleteOldUrlsCommand extends Command
         /** @var Url $url */
         foreach ($urls as $url) {
             if ($url->created_at->lessThanOrEqualTo($diff)) {
+                $url->shares()->delete();
                 $url->delete();
                 $url->owner()->decrement('short_urls_count');
                 event('log:event:oldUrlRemoved', [
