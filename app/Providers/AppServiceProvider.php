@@ -52,14 +52,8 @@ class AppServiceProvider extends ServiceProvider
             }
         });
 
-        // Для работы через Heroku
+        // Для работы миграций в Heroku
         if ($this->app->environment() === 'heroku') {
-            $url = parse_url(getenv('CLEARDB_DATABASE_URL'));
-            Config::set('database.connections.mysql.host', $url['host']);
-            Config::set('database.connections.mysql.username', $url['user']);
-            Config::set('database.connections.mysql.password', $url['pass']);
-            Config::set('database.connections.mysql.database', substr($url['path'], 1));
-
             Schema::defaultStringLength(191);
         }
 

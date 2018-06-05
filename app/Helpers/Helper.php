@@ -16,11 +16,12 @@ namespace App\Helpers;
 class Helper
 {
     /**
+     * @param null|string $url
      * @return string
      */
-    public static function getShortUrlPrefix(): string
+    public static function getShortUrlPrefix(?string $url = null): string
     {
-        return route('home');
+        return rtrim($url ? route('home').'/'.$url : route('home'), '/');
     }
 
     /**

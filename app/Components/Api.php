@@ -42,7 +42,7 @@ class Api
     {
         $requestUrl = $this->makeRequestUrl(static::GET_SHORT_METHOD, [
             'url'    => $originUrl,
-            'prefix' => Helper::getShortUrlPrefix().'/',
+            'prefix' => Helper::getShortUrlPrefix('/'),
         ]);
 
         $response = (new Client([

@@ -21,6 +21,8 @@ class CreateUrlRequest extends FormRequest
 {
     private const STATUS_AVAILABLE = 200;
 
+    private const URL_PATH_VALIDATE_PATTERN = '/^[A-Za-z0-9_-]+$/u';
+
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -40,20 +42,8 @@ class CreateUrlRequest extends FormRequest
     {
         return [
             'origin_url' => 'required|url',
-            'short_url'  => 'nullable|url',
+            'short_url'  => 'nullable|regex:'.static::URL_PATH_VALIDATE_PATTERN,
         ];
-    }
-
-    /**
-     * @return void
-     */
-    protected function prepareForValidation(): void
-    {
-        if ($this->has('short_url') && $this->input('short_url') !== null) {
-            $inputs              = $this->all();
-            $inputs['short_url'] = Helper::getShortUrlPrefix().'/'.$inputs['short_url'];
-            $this->replace($inputs);
-        }
     }
 
     /**
@@ -80,6 +70,12 @@ class CreateUrlRequest extends FormRequest
                 ]));
             } catch (ConnectException | RequestException $exception) {
                 $this->validationFailed($validator, 'origin_url', $exception->getMessage());
+            }
+
+            if ($this->has('short_url') && $this->input('short_url') !== null) {
+                $inputs              = $this->all();
+                $inputs['short_url'] = Helper::getShortUrlPrefix($inputs['short_url']);
+                $this->replace($inputs);
             }
         }
     }

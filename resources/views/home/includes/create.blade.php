@@ -25,7 +25,7 @@
                                 {{csrf_field()}}
                                 <div class="form-group required">
                                     <label class="control-label" for="origin-url">{{ __('home.originUrlLabel') }}</label>
-                                    <input type="url" class="form-control" name="origin_url" id="origin-url" required>
+                                    <input type="url" class="form-control" name="origin_url" id="origin-url" value="{{ old('origin_url')  }}" required>
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-sm-12">
@@ -34,9 +34,9 @@
                                     <div class="col-sm-8">
                                         <div class="input-group">
                                             <div class="input-group-prepend">
-                                                <div class="input-group-text">{{ \App\Helpers\Helper::getShortUrlPrefix() }}/</div>
+                                                <div class="input-group-text">{{ \App\Helpers\Helper::getShortUrlPrefix('/') }}/</div>
                                             </div>
-                                            <input type="text" class="form-control" name="short_url" id="short-url">
+                                            <input type="text" class="form-control" name="short_url" id="short-url" value="{{ old('short_url')  }}">
                                         </div>
                                     </div>
                                     <div class="col-sm-3">
